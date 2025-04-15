@@ -1,0 +1,4 @@
+graphviz==0.20.1
+networkx==3.1
+matplotlib==3.7.1
+Pillow==10.0.0 

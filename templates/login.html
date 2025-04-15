@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Vitamin Deficiency Predictor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
+    <style>
+        .auth-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-floating {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .form-floating input {
+            border-radius: 15px;
+            border: 1px solid rgba(206, 212, 218, 0.5);
+            padding: 1rem 3rem 1rem 1rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            height: calc(3.5rem + 2px);
+            line-height: 1.25;
+            font-size: 1rem;
+        }
+        
+        .form-floating label {
+            padding: 1rem;
+            height: 100%;
+            color: #6c757d;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label {
+            transform: scale(0.85) translateY(-1rem) translateX(0.15rem);
+            background-color: transparent;
+            height: auto;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        .btn-primary {
+            border-radius: 10px;
+            padding: 0.8rem;
+            font-weight: 500;
+            background: linear-gradient(45deg, #4a90e2, #357abd);
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(53, 122, 189, 0.3);
+        }
+        
+        .password-field {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            z-index: 5;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+        
+        .password-toggle:hover {
+            opacity: 1;
+            color: #4a90e2;
+        }
+        
+        .password-toggle:focus {
+            outline: none;
+            opacity: 1;
+        }
+        
+        .password-toggle i {
+            font-size: 1.2rem;
+        }
+        
+        .form-floating input[type="password"],
+        .form-floating input[type="text"] {
+            padding-right: 3rem;
+        }
+        
+        .form-control:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.15);
+        }
+        
+        .auth-links {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        
+        .auth-links a {
+            color: #4a90e2;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .auth-links a:hover {
+            color: #357abd;
+            text-decoration: underline;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+        }
+        
+        .remember-me input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+        
+        .form-check-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Vitamin Decorative Cards -->
+    <div class="vitamin-cards">
+        <div class="vitamin-card" data-vitamin="A">
+            <div class="vitamin-icon">
+                <i class="fas fa-eye"></i>
+            </div>
+            <span class="vitamin-name">Vitamin A</span>
+            <span class="vitamin-benefit">Vision & Immunity</span>
+        </div>
+        <div class="vitamin-card" data-vitamin="B12">
+            <div class="vitamin-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <span class="vitamin-name">Vitamin B12</span>
+            <span class="vitamin-benefit">Energy & Focus</span>
+        </div>
+        <div class="vitamin-card" data-vitamin="C">
+            <div class="vitamin-icon">
+                <i class="fas fa-shield-virus"></i>
+            </div>
+            <span class="vitamin-name">Vitamin C</span>
+            <span class="vitamin-benefit">Immunity Boost</span>
+        </div>
+        <div class="vitamin-card" data-vitamin="D">
+            <div class="vitamin-icon">
+                <i class="fas fa-sun"></i>
+            </div>
+            <span class="vitamin-name">Vitamin D</span>
+            <span class="vitamin-benefit">Bone Health</span>
+        </div>
+        <div class="vitamin-card" data-vitamin="E">
+            <div class="vitamin-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <span class="vitamin-name">Vitamin E</span>
+            <span class="vitamin-benefit">Antioxidant</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show mt-3" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <div class="auth-wrapper">
+                    <!-- Auth Header -->
+                    <div class="auth-header text-center">
+                        <h1 class="mb-4">Nutrition Deficiency Analysis and Diet Plan Recommendation system</h1>
+                        <p class="text-white mb-4">welcome</p>
+                    </div>
+
+                    <!-- Login Card -->
+                    <div class="auth-card">
+                        <div class="auth-form-container">
+                            <form action="{{ url_for('login') }}" method="POST" class="login-form">
+                                <div class="form-floating">
+                                    <input type="email" 
+                                           class="form-control" 
+                                           id="loginEmail" 
+                                           name="email" 
+                                           placeholder="name@example.com" 
+                                           required>
+                                    <label for="loginEmail">
+                                        <i class="fas fa-envelope me-2"></i>Email address
+                                    </label>
+                                </div>
+                                
+                                <div class="form-floating">
+                                    <input type="password" 
+                                           class="form-control" 
+                                           id="loginPassword" 
+                                           name="password" 
+                                           placeholder="Password" 
+                                           required>
+                                    <label for="loginPassword">
+                                        <i class="fas fa-lock me-2"></i>Password
+                                    </label>
+                                    <button type="button" class="password-toggle">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+
+                                <div class="remember-me">
+                                    <div class="form-check">
+                                        <input class="form-check-input" 
+                                               type="checkbox" 
+                                               id="rememberMe" 
+                                               name="remember">
+                                        <label class="form-check-label" for="rememberMe">
+                                            Remember me
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                                </button>
+
+                                <div class="auth-links">
+                                    <p class="mb-0">Don't have an account? 
+                                        <a href="{{ url_for('register') }}">Create one</a>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Password visibility toggle
+            const toggleButton = document.querySelector('.password-toggle');
+            const passwordInput = document.querySelector('#loginPassword');
+            
+            toggleButton.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+
+            // Enhanced vitamin card interactions
+            const vitaminCards = document.querySelectorAll('.vitamin-card');
+            const positions = [
+                { x: '15%', y: '25%', rotation: -15 },    // Top left
+                { x: '85%', y: '20%', rotation: 15 },     // Top right
+                { x: '8%', y: '65%', rotation: -10 },     // Middle left
+                { x: '92%', y: '60%', rotation: 10 },     // Middle right
+                { x: '50%', y: '85%', rotation: 0 }       // Bottom center
+            ];
+
+            // Initialize cards with positions and effects
+            vitaminCards.forEach((card, index) => {
+                // Set initial position and rotation
+                card.style.left = positions[index].x;
+                card.style.top = positions[index].y;
+                card.style.transform = `translate(-50%, -50%) rotate(${positions[index].rotation}deg)`;
+                
+                // Add animation delay
+                card.style.animationDelay = `${index * 0.2}s`;
+
+                // Add mouse move effect for 3D tilt
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // Calculate rotation based on mouse position
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 10;
+                    const rotateY = (centerX - x) / 10;
+
+                    // Update card transform
+                    card.style.transform = `
+                        translate(-50%, -50%)
+                        rotate(${positions[index].rotation}deg)
+                        rotateX(${rotateX}deg)
+                        rotateY(${rotateY}deg)
+                        scale(1.05)
+                    `;
+
+                    // Update gradient position
+                    const mouseX = ((x / rect.width) * 100).toFixed(2);
+                    const mouseY = ((y / rect.height) * 100).toFixed(2);
+                    card.style.setProperty('--mouse-x', `${mouseX}%`);
+                    card.style.setProperty('--mouse-y', `${mouseY}%`);
+                });
+
+                // Reset transform on mouse leave
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `
+                        translate(-50%, -50%)
+                        rotate(${positions[index].rotation}deg)
+                    `;
+                });
+
+                // Add floating animation
+                const randomDelay = Math.random() * 2;
+                const randomDuration = 3 + Math.random() * 2;
+                card.style.animation = `float ${randomDuration}s ease-in-out ${randomDelay}s infinite`;
+            });
+
+            // Add parallax effect on mouse move
+            document.addEventListener('mousemove', (e) => {
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+
+                vitaminCards.forEach((card, index) => {
+                    if (!card.matches(':hover')) {
+                        const depth = (index + 1) * 0.2;
+                        const translateX = (mouseX - 0.5) * depth * 30;
+                        const translateY = (mouseY - 0.5) * depth * 30;
+                        const currentRotation = positions[index].rotation;
+
+                        card.style.transform = `
+                            translate(calc(-50% + ${translateX}px), calc(-50% + ${translateY}px))
+                            rotate(${currentRotation}deg)
+                        `;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,659 @@
+/* Root Variables */
+:root {
+    --primary-color: #4A90E2;
+    --secondary-color: #2C3E50;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --background-gradient: linear-gradient(135deg, rgba(26, 42, 108, 0.8), rgba(178, 31, 31, 0.8), rgba(253, 187, 45, 0.8));
+}
+
+/* Body Background */
+body {
+    background: url('https://images.unsplash.com/photo-1689940019781-1177ac1f6d18?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover fixed no-repeat;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+   
+    z-index: 0;
+   
+}
+
+/* Auth Wrapper */
+.auth-wrapper {
+    padding: 2rem 0;
+    position: relative;
+    z-index: 2;
+}
+
+/* Auth Header */
+.auth-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.auth-header h1 {
+    font-size: 2.5rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.auth-header p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Auth Card */
+.auth-card {
+    background: rgba(255, 255, 255, 0.489);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+}
+
+.auth-card:hover::before {
+    transform: translateX(100%);
+}
+
+.auth-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(31, 38, 135, 0.25);
+}
+
+/* Auth Tabs */
+.auth-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.auth-tab {
+    background: none;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.auth-tab i {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.auth-tab:hover i {
+    transform: scale(1.2);
+}
+
+.auth-tab::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), transparent);
+    transition: width 0.3s ease;
+    border-radius: 3px;
+}
+
+.auth-tab:hover {
+    opacity: 1;
+}
+
+.auth-tab.active {
+    opacity: 1;
+    color: var(--primary-color);
+}
+
+.auth-tab.active::after {
+    width: 100%;
+}
+
+/* Auth Forms */
+.auth-form {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+/* Form Controls */
+.form-floating {
+    margin-bottom: 1.5rem;
+}
+
+.form-control {
+    border-radius: 12px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    height: auto;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(74, 144, 226, 0.15);
+}
+
+.form-floating label {
+    padding-left: 1rem;
+    color: var(--secondary-color);
+}
+
+.form-floating label i {
+    opacity: 0.7;
+}
+
+/* Password Field */
+.password-field {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--secondary-color);
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 5;
+}
+
+.password-toggle:hover {
+    opacity: 1;
+    color: var(--primary-color);
+}
+
+/* Password Strength Meter */
+.password-strength {
+    margin-top: 0.5rem;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    height: 4px;
+    overflow: hidden;
+}
+
+.strength-meter {
+    height: 100%;
+    width: 0;
+    transition: all 0.3s ease;
+    background-color: var(--danger-color);
+}
+
+.strength-text {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+}
+
+/* Checkbox */
+.form-check-input {
+    border-radius: 4px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-top: 0.2rem;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-label {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+}
+
+.form-check-label a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.form-check-label a:hover {
+    text-decoration: underline;
+}
+
+/* Submit Button */
+.btn-primary {
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary-color), #357abd);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+/* Links */
+.forgot-password, .login-link, .register-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.forgot-password:hover, .login-link:hover, .register-link:hover {
+    color: #357abd;
+    text-decoration: underline;
+}
+
+/* Social Login */
+.social-login {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.divider {
+    text-align: center;
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: calc(50% - 4rem);
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.divider::before {
+    left: 0;
+}
+
+.divider::after {
+    right: 0;
+}
+
+.divider span {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 0 1rem;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.social-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    background: white;
+    color: var(--secondary-color);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.social-button i {
+    font-size: 1.2rem;
+}
+
+.social-button.google {
+    color: #DB4437;
+    border-color: rgba(219, 68, 55, 0.2);
+}
+
+.social-button.google:hover {
+    background: rgba(219, 68, 55, 0.1);
+    border-color: #DB4437;
+}
+
+.social-button.facebook {
+    color: #4267B2;
+    border-color: rgba(66, 103, 178, 0.2);
+}
+
+.social-button.facebook:hover {
+    background: rgba(66, 103, 178, 0.1);
+    border-color: #4267B2;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 1.5rem;
+    }
+
+    .auth-header h1 {
+        font-size: 2rem;
+    }
+
+    .auth-tab {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .social-buttons {
+        flex-direction: column;
+    }
+
+    .social-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .auth-card {
+        padding: 1rem;
+    }
+
+    .auth-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .auth-tabs {
+        gap: 0.5rem;
+    }
+
+    .auth-tab {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .form-floating label {
+        font-size: 0.9rem;
+    }
+}
+
+/* Form Animations */
+.auth-form-container {
+    animation: fadeIn 0.5s ease;
+}
+
+.form-control:focus + label {
+    color: var(--primary-color);
+}
+
+.form-floating input:focus ~ label i,
+.form-floating input:not(:placeholder-shown) ~ label i {
+    color: var(--primary-color);
+}
+
+/* Vitamin Cards */
+.vitamin-cards {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.vitamin-card {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.vitamin-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 30px;
+    padding: 2px;
+    background: linear-gradient(
+        45deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.4),
+        transparent 60%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+.vitamin-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 30px;
+    background: radial-gradient(
+        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 50%
+    );
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.vitamin-card:hover::after {
+    opacity: 1;
+}
+
+.vitamin-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.vitamin-icon::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    padding: 2px;
+    background: linear-gradient(45deg, var(--vitamin-color), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+.vitamin-icon i {
+    font-size: 1.5rem;
+    color: var(--vitamin-color);
+    filter: drop-shadow(0 0 8px var(--vitamin-color));
+    transition: all 0.3s ease;
+}
+
+.vitamin-name {
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.vitamin-benefit {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.8rem;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+/* Vitamin Card Colors */
+.vitamin-card[data-vitamin="A"] { --vitamin-color: #FF6B6B; }
+.vitamin-card[data-vitamin="B12"] { --vitamin-color: #4ECDC4; }
+.vitamin-card[data-vitamin="C"] { --vitamin-color: #FFD93D; }
+.vitamin-card[data-vitamin="D"] { --vitamin-color: #95E1D3; }
+.vitamin-card[data-vitamin="E"] { --vitamin-color: #F8A5C2; }
+
+/* Hover Effects */
+.vitamin-card:hover {
+    transform: translateY(-10px) rotateX(10deg) rotateY(10deg);
+    box-shadow: 
+        0 15px 35px rgba(31, 38, 135, 0.3),
+        0 0 15px var(--vitamin-color);
+}
+
+.vitamin-card:hover .vitamin-icon {
+    transform: scale(1.1) translateZ(20px);
+}
+
+.vitamin-card:hover .vitamin-icon i {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 12px var(--vitamin-color));
+}
+
+.vitamin-card:hover .vitamin-name {
+    transform: translateZ(15px);
+}
+
+.vitamin-card:hover .vitamin-benefit {
+    opacity: 1;
+    transform: translateZ(10px);
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(-50%, -50%) translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) translateY(-20px) rotate(5deg);
+    }
+}
+
+/* Update responsive design for vitamin cards */
+@media (max-width: 1200px) {
+    .vitamin-card {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+@media (max-width: 768px) {
+    .vitamin-card {
+        width: 100px;
+        height: 100px;
+        font-size: 0.9em;
+    }
+
+    .vitamin-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+
+    .vitamin-name {
+        font-size: 0.8rem;
+    }
+
+    .vitamin-benefit {
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .vitamin-card:nth-child(2),
+    .vitamin-card:nth-child(4) {
+        display: none; /* Hide some cards on very small screens */
+    }
+} 
