@@ -1,4 +1,4 @@
-# Vitamin Deficiency Predictor
+# Vitamin Deficiency and Diet Plan Recommendation 
 
 A machine learning-powered web application that predicts potential vitamin deficiencies based on user symptoms and provides personalized diet recommendations.
 
